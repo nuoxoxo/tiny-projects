@@ -26,8 +26,7 @@ class   Boid
         this.velocity = p5.Vector.random2D()
         this.velocity.setMag(random(2, 4))
         this.acceleration = createVector()
-        this.maxFroce = 0.3 // gravity
-        this.maxSpeed = 1
+        this.maxForce = 0.2 // gravity
     }
 
     flock(boids)
@@ -57,10 +56,8 @@ class   Boid
         if (total > 0)
         {
             steering.div(total)
-            steering.setMag(this.maxSpeed)
-            // above line : to align, it depends the direction-towards more than v
             steering.sub(this.velocity)
-            steering.limit(this.maxFroce)
+            steering.limit(this.maxForce)
         }
         return steering
     }
