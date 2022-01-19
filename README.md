@@ -1,2 +1,1 @@
-# flock-of-seagulls
-🐤 random tiny projects
+# 🐤 tiny projects
