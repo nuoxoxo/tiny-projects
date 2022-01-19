@@ -24,3 +24,4 @@ def setup():
         # fill(random(50, 250), random(200, 255), random(220))
         fill(172, 225, 220)
         circle(center_x, center_y, d)
+
