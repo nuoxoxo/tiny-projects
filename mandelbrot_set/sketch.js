@@ -1,6 +1,6 @@
 function setup()
 {
-    createCanvas(3200, 3200)
+    createCanvas(12800, 12800)
     pixelDensity(1)
     loadPixels()
 
@@ -33,10 +33,10 @@ function setup()
             let yanse = n === Maxitr ? 0 : map(n, 0, Finess, 0, 255)
 
             let px = (x + y * width) * 4
-            pixels[px + 0] = 10//(0,0,yanse)
-            pixels[px + 1] = 10//(0,0,yanse)
+            pixels[px + 0] = 16//(0,0,yanse)
+            pixels[px + 1] = 16//(0,0,yanse)
             pixels[px + 2] = yanse
-            pixels[px + 3] = 100//(0,0,yanse)
+            pixels[px + 3] = 255
         }
     }
     updatePixels()
