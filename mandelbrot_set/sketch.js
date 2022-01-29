@@ -1,6 +1,7 @@
 function setup()
 {
-    createCanvas(12800, 12800)
+    createCanvas(2800, 2800)
+    //createCanvas(12800, 12800)
     pixelDensity(1)
     loadPixels()
 
