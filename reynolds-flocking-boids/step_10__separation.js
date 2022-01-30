@@ -6,6 +6,7 @@ const   offset = size / 2 + 3
 function    setup()
 {
     createCanvas(1024, 768)
+    colorMode(HSB)
     for (let i = 0; i < 256; i++)   flock.push(new Boid())
 }
 
@@ -39,9 +40,9 @@ class   Boid
         //let cohesion = this.cohere(boids)
         let separation = this.separate(boids)
 
-        //this.acceleration.add(alignment) // changed from align only
-        //this.acceleration.add(cohesion) // diff from align only
-        this.acceleration.add(separation) // diff from align only
+        //this.acceleration.add(alignment) // changed from align_only
+        //this.acceleration.add(cohesion) // diff from align_only
+        this.acceleration.add(separation)
     }
 
     update()
@@ -53,9 +54,13 @@ class   Boid
 
     show()
     {
+        
         strokeWeight(size)
-        stroke(255)
+        stroke(255) // b&w
+        //stroke(240, this.position.x / width * 100, this.position.y / height * 100)
         point(this.position.x, this.position.y)
+
+
     }
 
     wrap()
