@@ -1,4 +1,6 @@
 const   flock = []
+let size = 12
+let offset = size/2 + 3
 
 function    setup()
 {
@@ -47,17 +49,22 @@ class   Boid
 
     show()
     {
-        strokeWeight(12)
+        strokeWeight(size)
         stroke(255)
         point(this.position.x, this.position.y)
     }
 
     wrap()
-    {
+    {        if (this.position.x - offset > width)     this.position.x = -offset
+        else if (this.position.x + offset < 0)    this.position.x = width + offset
+        if (this.position.y - offset > height)    this.position.y = -offset
+        else if (this.position.y + offset < 0)     this.position.y = height + offset
+        /*
         if (this.position.x > width)    this.position.x = 0
         else if (this.position.x < 0)   this.position.x = width
         if (this.position.y > height)   this.position.y = 0
         else if (this.position.y < 0)   this.position.y = height
+    */
     }
 
     cohere(boids)
