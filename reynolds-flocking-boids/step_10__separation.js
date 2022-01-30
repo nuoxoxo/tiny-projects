@@ -1,7 +1,8 @@
 const	perceptionRadius = 64
 const   flock = []
-const   size = 12
+const   size = 4
 const   offset = size / 2 + 3
+const   H = 120
 
 function    setup()
 {
@@ -57,7 +58,7 @@ class   Boid
         
         strokeWeight(size)
         stroke(255) // b&w
-        //stroke(240, this.position.x / width * 100, this.position.y / height * 100)
+        stroke(H, this.position.x / width * 100, this.position.y / height * 300)
         point(this.position.x, this.position.y)
 
 

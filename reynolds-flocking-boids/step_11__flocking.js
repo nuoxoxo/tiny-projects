@@ -1,11 +1,24 @@
+const	perceptionRadius = 64
 const   flock = []
-let size = 3
-let offset = size/2 + 3
+const   size = 12
+const   offset = size / 2 + 3
+const   H = 60
+
+// 0    RED
+// 30   ORANGE
+// 60   YELLOW
+// 120  GREEN
+// 180  CYAN
+// 240  BLUE
+// 270  PURPLE
+// 300  PINK
+// 330  CHERRY
 
 function    setup()
 {
     createCanvas(1024, 768)
-    for (let i = 0; i < 256; i++)   flock.push(new Boid())
+    colorMode(HSB)
+    for (let i = 0; i < 250; i++)   flock.push(new Boid())
 }
 
 function    draw()
@@ -30,14 +43,21 @@ class   Boid
         this.acceleration = createVector()
         this.maxForce = 0.1 // gravity
         this.maxSpeed = 1
+        //this.S = this.position.x / width * 100
+        //this.B = this.position.x / height * 100
+        this.S = random(20, 41)
+        this.B = random(20, 90)
     }
 
     flock(boids)
     {
         let alignment = this.align(boids)
         let cohesion = this.cohere(boids)
-        this.acceleration.add(alignment) // changed from align only
-        this.acceleration.add(cohesion) // diff from align only
+        let separation = this.separate(boids)
+
+        this.acceleration.add(alignment) // changed from align_only
+        this.acceleration.add(cohesion) // diff from align_only
+        this.acceleration.add(separation)
     }
 
     update()
@@ -49,29 +69,58 @@ class   Boid
 
     show()
     {
+        
         strokeWeight(size)
-        stroke(255)
+        //stroke(255) // b&w
+        stroke(H, this.S, this.B)
         point(this.position.x, this.position.y)
+
     }
 
     wrap()
-    {        if (this.position.x - offset > width)     this.position.x = -offset
-        else if (this.position.x + offset < 0)    this.position.x = width + offset
-        if (this.position.y - offset > height)    this.position.y = -offset
-        else if (this.position.y + offset < 0)     this.position.y = height + offset
-        /*
-        if (this.position.x > width)    this.position.x = 0
-        else if (this.position.x < 0)   this.position.x = width
-        if (this.position.y > height)   this.position.y = 0
-        else if (this.position.y < 0)   this.position.y = height
-    */
+    {
+        if (this.position.x - offset > width)   this.position.x = -offset
+        else if (this.position.x + offset < 0)  this.position.x = width + offset
+        if (this.position.y - offset > height)  this.position.y = -offset
+        else if (this.position.y + offset < 0)  this.position.y = height + offset
+    }
+
+    separate(boids)
+    {
+        let total = 0
+        let steering = createVector()
+
+        for (let other of boids)
+        {
+            let d = dist
+            (
+                other.position.x, other.position.y,
+                this.position.x, this.position.y,
+            )
+            if (other != this && d < perceptionRadius)
+            {
+                let away = p5.Vector.sub(this.position, other.position)
+                // away is a vector pointing away from the local flockmate `other`
+                away.div(d) // the further the weaker the force, the closer the higher
+                steering.add(away)
+                total++
+            }
+        }
+        if (total > 0)
+        {
+            steering.div(total)
+            steering.setMag(this.maxSpeed)
+            steering.sub(this.velocity)
+            steering.limit(this.maxForce)
+        }
+        return steering
     }
 
     cohere(boids)
     {
         let total = 0
-        let perceptionRadius = 64
         let steering = createVector()
+
         for (let other of boids)
         {
             let d = dist
@@ -89,7 +138,7 @@ class   Boid
         {
             steering.div(total)
             steering.sub(this.position)
-            //steering.setMag(this.maxSpeed)
+            steering.setMag(this.maxSpeed)
             steering.sub(this.velocity)
             steering.limit(this.maxForce)
         }
@@ -99,8 +148,8 @@ class   Boid
     align(boids)
     {
         let total = 0
-        let perceptionRadius = 64
         let steering = createVector()
+
         for (let other of boids)
         {
             let d = dist

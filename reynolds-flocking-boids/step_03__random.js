@@ -34,7 +34,7 @@ class   Boid
 
     show()
     {
-        strokeWeight(6)
+        strokeWeight(12)
         stroke(255)
         point(this.position.x, this.position.y)
     }
