@@ -3,17 +3,27 @@ const   flock = []
 function    setup()
 {
     createCanvas(1024, 768)
-    for (let i = 0; i < 512; i++)   flock.push(new Boid())
+    for (let i = 0; i < 256; i++)   flock.push(new Boid())
 }
 
 function    draw()
 {
     background(16)
+    let flock_copy = [...flock]
+
+    /*
     for (let boid of flock)
     {
         boid.flock(flock)
         boid.update()
         boid.show()
+    }
+    */
+    for (let i = 0; i < flock.length; i++)
+    {
+        flock[i].flock(flock_copy)
+        flock[i].update()
+        flock[i].show()
     }
 }
 
@@ -67,7 +77,7 @@ class   Boid
 
     show()
     {
-        strokeWeight(4)
+        strokeWeight(12)
         stroke(255)
         point(this.position.x, this.position.y)
     }
