@@ -1,6 +1,6 @@
 const	perceptionRadius = 64
 const   flock = []
-const   size = 12
+const   size = 16
 const   offset = size / 2 + 3
 const   H = 60
 
@@ -16,20 +16,24 @@ const   H = 60
 
 function    setup()
 {
-    createCanvas(1024, 768)
+    createCanvas(1600, 900)
+    //createCanvas(1024, 1024)
     colorMode(HSB)
-    for (let i = 0; i < 250; i++)   flock.push(new Boid())
+    for (let i = 0; i < 300; i++)   flock.push(new Boid())
 }
 
 function    draw()
 {
     background(8)
-    for (let boid of flock)
+
+    let flockk = [...flock]
+
+    for (let i = 0; i < flock.length; i++)
     {
-        boid.wrap()
-        boid.flock(flock)
-        boid.update()
-        boid.show()
+        flock[i].wrap()
+        flock[i].flock(flockk)
+        flock[i].update()
+        flock[i].show()
     }
 }
 
@@ -41,10 +45,11 @@ class   Boid
         this.velocity = p5.Vector.random2D()
         this.velocity.setMag(random(2, 4))
         this.acceleration = createVector()
-        this.maxForce = 0.1 // gravity
-        this.maxSpeed = 1
+        this.maxForce = 0.6 // gravity
+        this.maxSpeed = 1.6
         //this.S = this.position.x / width * 100
         //this.B = this.position.x / height * 100
+        this.H = random(20, H)
         this.S = random(20, 41)
         this.B = random(20, 90)
     }
@@ -72,7 +77,7 @@ class   Boid
         
         strokeWeight(size)
         //stroke(255) // b&w
-        stroke(H, this.S, this.B)
+        stroke(H, this.S, random(50, abs(100 - this.B)))
         point(this.position.x, this.position.y)
 
     }
