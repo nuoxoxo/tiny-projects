@@ -35,3 +35,6 @@
 
 *.vimrc
 *.json
+*.png
+*.jpeg
+*.jpg
