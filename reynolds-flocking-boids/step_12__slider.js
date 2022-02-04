@@ -3,6 +3,7 @@ const   flock = []
 const   size = 16
 const   offset = size / 2 + 3
 const   H = 60
+let pause = false
 
 let as, cs, ss;
 
@@ -34,13 +35,21 @@ function    draw()
 
     let flockk = [...flock]
 
-    for (let i = 0; i < flock.length; i++)
+    if (!pause)
     {
-        flock[i].wrap()
-        flock[i].flock(flockk)
-        flock[i].update()
-        flock[i].show()
+        for (let f of flock)
+        {
+            f.wrap()
+            f.flock(flockk)
+            f.update()
+            f.show()
+        }
     }
+}
+
+function    keyPressed()
+{
+    if (key == 'p') pause = !pause
 }
 
 class   Boid

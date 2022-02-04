@@ -3,6 +3,7 @@ const   flock = []
 const   size = 16
 const   offset = size / 2 + 3
 const   H = 60
+//var     pause = false
 
 // 0    RED
 // 30   ORANGE
@@ -28,13 +29,23 @@ function    draw()
 
     let flockk = [...flock]
 
-    for (let i = 0; i < flock.length; i++)
+    for (let F of flock)
     {
-        flock[i].wrap()
-        flock[i].flock(flockk)
-        flock[i].update()
-        flock[i].show()
+        F.wrap()
+        F.flock(flockk)
+        F.update()
+        F.show()
     }
+}
+
+function    mousePressed()
+{
+    noLoop();
+}
+
+function    mouseReleased()
+{
+    loop();
 }
 
 class   Boid
