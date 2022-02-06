@@ -1,16 +1,21 @@
 let circles
 let spots
 let img
+const HL = Math.round(Math.random() * (180 - 10)) + 10
+const HR = Math.round(Math.random() * (350 - HL)) + HL
 
-
-function preload(){ img = loadImage("__.png") }
+function preload(){ img = loadImage("hu.png") }
 
 
 function setup()
 {
+
+
     img.loadPixels()
     createCanvas(img.width, img.height)
     colorMode(HSB)
+
+    console.log(HL, HR)
 
     circles = []
     spots = []
@@ -52,7 +57,8 @@ function draw()
     {
         if (c.growing)
         {
-            if (c.edge())   c.growing = false
+            if (c.edge())
+		c.growing = false
             else
             {
                 for (var o of circles)
@@ -104,25 +110,29 @@ class Circle
     {
         this.x = x
         this.y = y
-        this.r = 8
+        this.r = 2
 
-        this.H = random(10, 70)
-        this.S = random(80, 100)
-        this.B = random(80, 100)
+        this.H = random(HL, HR)
+        //this.S = random(80, 100)
+        this.S = 100
+        //this.S = random(80, 100)
+        this.B = 100
 
         this.growing = true
     }
 
     grow()
     {
-        if (this.growing && this.r < 26)    this.r += 6
+        if (this.growing && this.r < 12)
+	    this.r += 2
     }
 
     show()
     {
-        noStroke()
-        //stroke(1)
-        fill( this.H, this.S, this.B )
+        //noStroke()
+        stroke(1)
+        let cmode = color(this.H, this.S, this.B, 50)
+        fill(cmode)
         ellipse(this.x, this.y, this.r * 2, this.r * 2)
     }
 
