@@ -38,3 +38,5 @@
 *.png
 *.jpeg
 *.jpg
+
+_p5js/
