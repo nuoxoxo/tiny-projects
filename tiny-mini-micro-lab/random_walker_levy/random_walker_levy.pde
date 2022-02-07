@@ -8,7 +8,7 @@ int      moves = 100000;
 
 void  setup()
 {
-  size(720, 720) ;
+  size(1000,1000) ;
   background(0);
   colorMode(HSB);
   curr = new PVector(width / 2, height / 2);
@@ -22,8 +22,11 @@ void  draw()
   //  noLoop();
   moves-- ;
 
-  if (moves % 1000 == 0)  println(moves);
-
+  if (moves % 2000 == 0)
+  {
+    save("round.png");
+    println(moves);
+  }
   if (moves < 1)
   {
     save("walk.png");
@@ -53,20 +56,22 @@ void  draw()
   PVector  step = PVector.random2D();
   float    r = random(100);
 
-  if (r < 1)
+  if (r < 2)
   {
-    step.mult(random(25, 100));
+    step.mult(random(25, width / 4));
   } else
   {
-    step.setMag(4);
-    stroke(prev.x % 330, 360, 360, 360);
-    strokeWeight(2);
+    step.setMag(2);
+
     //if (prevr >= 1)  line(curr.x, curr.y, prev.x, prev.y);
   }
 
-  //if (!w && prevr >= 1)  line(curr.x, curr.y, prev.x, prev.y);
-
+  stroke(dist(curr.x, curr.y, width / 2, height / 2) / height * 360, 300, 300, 300);
+  strokeWeight(2);
   if (!w)  line(curr.x, curr.y, prev.x, prev.y);
+
+
+  //if (!w && prevr >= 1)  line(curr.x, curr.y, prev.x, prev.y);
 
   //stroke(prev.x % 360, 360, 360, 360);
   //strokeWeight(2);
