@@ -32,11 +32,12 @@
 *.app
 
 *venv*
-
 *.vimrc
 *.json
 *.png
 *.jpeg
 *.jpg
+*.swp
+*.swo
 
 _p5js/
