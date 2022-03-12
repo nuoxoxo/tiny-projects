@@ -7,24 +7,22 @@ function drawCircles()
     var limit = iterationLimit
 
     //while (circles.length < 8196 && limit > -1)
-    while (circles.length < 1024 * N && limit > -1)
-    {
+    while (circles.length < 1024 * N && limit > -1) {
         let overlapped = false
-        var circle =
-        {
+        var circle = {
             x: random(width),
             y: random(height),
             r: random(random(2, 32), 64)
         }
-        for (let other of circles)
+        for (let other of circles) {
             if (circle.r + other.r > dist(circle.x, circle.y, other.x, other.y))
                 overlapped = true
+	}
         if (!overlapped) circles.push(circle)
         limit--
     }
 
-    for (let c of circles)
-    {
+    for (let c of circles) {
         //  best palette
         fill(random(0,240),random(97,136),random(106,136))
 
