@@ -1,97 +1,148 @@
+let circles
+let spots
+let img
+const HL = Math.round(Math.random() * (180 - 10)) + 10
+const HR = Math.round(Math.random() * (350 - HL)) + HL
 
-let circles;
-let spots;
-let img;
+function preload(){ img = loadImage("tusimp2.png") }
 
-function preload() {
-  img = loadImage("smaller.png");
-}
 
-function setup() {
-  createCanvas(2632, 824);
-  img.loadPixels();
-  spots = [];
-  circles = [];
-  colorMode(HSB)
+function setup()
+{
 
-  for (let x = 0; x < img.width; x++) {
-    for (let y = 0; y < img.height; y++) {
-      let index = x + y * img.width;
-      let c = img.pixels[index * 4];
-      let b = brightness([c]);
-      if (b > 1) {
-        spots.push(createVector(x, y));
-      }
-    }
-  }
-}
 
-function draw() {
-  background(255);
+    img.loadPixels()
+    createCanvas(img.width, img.height)
+    colorMode(HSB)
 
-  let total = 5;
-  let count = 0;
-  let attempts = 0;
+    console.log(HL, HR)
 
-  while (count < total) {
-    let newC = newCircle();
-    if (newC !== null) {
-      circles.push(newC);
-      count++;
-    }
-    attempts++;
-    if (attempts > 1000) {
-      noLoop();
-      console.log("finished");
-      break;
-    }
-  }
+    circles = []
+    spots = []
+    let x = -1
+    while (++x < img.width)
+    {
+        let y = -1
+        while (++y < img.height)
+        {
+            let index = x + y * img.width
+            let c = img.pixels[index * 4]
+            let b = brightness(c)
 
-  for (let i = 0; i < circles.length; i++) {
-    let circl = circles[i];
-
-    if (circl.growing) {
-      if (circl.edges()) {
-        circl.growing = false;
-      } else {
-        for (let j = 0; j < circles.length; j++) {
-          let other = circles[j];
-          if (circl !== other) {
-            var d = dist(circl.x, circl.y, other.x, other.y);
-            var distance = circl.r + other.r;
-
-            if (d - 4 < distance) {
-              circl.growing = false;
-              break;
-            }
-          }
+            if (b > 1)  spots.push(createVector(x, y))
         }
-      }
     }
-
-    circl.show();
-    circl.grow();
-  }
 }
 
-function newCircle() {
-  var r = int(random(0, spots.length));
-  var spot = spots[r];
-  var x = spot.x;
-  var y = spot.y;
 
-  var valid = true;
-  for (var i = 0; i < circles.length; i++) {
-    var circle = circles[i];
-    var d = dist(x, y, circle.x, circle.y);
-    if (d < circle.r) {
-      valid = false;
-      break;
+function draw()
+{
+    background(0)
+
+    let total = 5, count = 0, trial = 0;
+
+    while (count < total)
+    {
+        let c = newCircle()
+
+        if (c)  circles.push(c), count++
+        trial++
+        if (trial > 1000)
+        {
+            noLoop()
+            break
+        }
     }
-  }
-  if (valid) {
-    return new Circle(x, y);
-  } else {
-    return null;
-  }
+    for (var c of circles)
+    {
+        if (c.growing)
+        {
+            if (c.edge())
+		c.growing = false
+            else
+            {
+                for (var o of circles)
+                {
+                    if (o ^ c)
+                    {
+                        let d = dist(c.x, c.y, o.x, o.y)
+                        if (d - 4 < c.r + o.r)
+                        {
+                            c.growing = false
+                            break
+                        }
+                    }
+                }
+            }
+        }
+        c.show()
+        c.grow()
+    }
+}
+
+
+function newCircle()
+{
+    let r = int(random(0, spots.length))
+    let x = spots[r].x;
+    let y = spots[r].y
+    let ok = true
+    let i = -1
+
+    while (++i < circles.length)
+    {
+        let c = circles[i]
+        let d = dist(x, y, c.x, c.y)
+        if (d < c.r)
+        {
+            ok = false
+            break
+        }
+    }
+    if (ok) return new Circle(x, y)
+    else    return null
+}
+
+
+class Circle
+{
+    constructor(x, y)
+    {
+        this.x = x
+        this.y = y
+        this.r = 2
+
+        this.H = random(HL, HR)
+        //this.S = random(80, 100)
+        this.S = 100
+        //this.S = random(80, 100)
+        this.B = 100
+
+        this.growing = true
+    }
+
+    grow()
+    {
+        if (this.growing && this.r < 12)
+	    this.r += 2
+    }
+
+    show()
+    {
+        //noStroke()
+        stroke(1)
+        let cmode = color(this.H, this.S, this.B, 50)
+        fill(cmode)
+        ellipse(this.x, this.y, this.r * 2, this.r * 2)
+    }
+
+    edge()
+    {
+        return(
+            this.x + this.r > width ||
+            this.y + this.r > height ||
+            this.x - this.r < 0 ||
+            this.y - this.r < 0
+        )
+    }
 }
